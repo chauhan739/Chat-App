@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Window Popup</title>
+    <style>
+        .chat-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 250px;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            cursor: default;
+        }
+
+        .chat-popup-header {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: move;
+            z-index: 2;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .chat-popup-body {
+            padding: 10px;
+        }
+
+        .chat-popup-input {
+            width: calc(100% - 20px);
+            padding: 5px;
+            margin-right: 5px;
+            box-sizing: border-box;
+        }
+
+        .chat-popup-button {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="openChat()">Open Chat</button>
+
+<script>
+    let zIndexCounter = 1;
+
+    function openChat() {
+        const chatPopup = document.createElement('div');
+        chatPopup.classList.add('chat-popup');
+        chatPopup.style.zIndex = zIndexCounter++;
+
+        const header = document.createElement('div');
+        header.classList.add('chat-popup-header');
+        header.innerHTML = '<span style="cursor: pointer;" onclick="closeChat(this)">X</span> Chat Window';
+        header.onmousedown = function(e) {
+            dragElement(chatPopup, e);
+        };
+
+        const body = document.createElement('div');
+        body.classList.add('chat-popup-body');
+        body.innerHTML = '<p>This is the chat content. You can add your chat messages here.</p>';
+        body.style.maxHeight = 'calc(300px - 40px)'; // Subtracting the header height
+
+        const input = document.createElement('input');
+        input.classList.add('chat-popup-input');
+        input.placeholder = 'Type your message...';
+        input.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage(input.value);
+            }
+        });
+
+        const button = document.createElement('button');
+        button.classList.add('chat-popup-button');
+        button.innerText = 'Send';
+        button.addEventListener('click', function() {
+            sendMessage(input.value);
+        });
+
+        body.appendChild(input);
+        body.appendChild(button);
+        chatPopup.appendChild(header);
+        chatPopup.appendChild(body);
+        document.body.appendChild(chatPopup);
+    }
+
+    function closeChat(element) {
+        const chatPopup = element.closest('.chat-popup');
+        if (chatPopup) {
+            chatPopup.remove();
+        }
+    }
+
+    function dragElement(elmnt, e) {
+        e = e || window.event;
+        e.preventDefault();
+        let pos1 = e.clientX;
+        let pos2 = e.clientY;
+        let pos3 = 0;
+        let pos4 = 0;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = pos1 - e.clientX;
+            pos4 = pos2 - e.clientY;
+            pos1 = e.clientX;
+            pos2 = e.clientY;
+            elmnt.style.top = (elmnt.offsetTop - pos4) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos3) + "px";
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    function sendMessage(message) {
+        const chatPopup = document.querySelector('.chat-popup');
+        const body = chatPopup.querySelector('.chat-popup-body');
+        const messageContainer = document.createElement('div');
+        messageContainer.innerText = message;
+        body.appendChild(messageContainer);
+    }
+</script>
+
+</body>
+</html>

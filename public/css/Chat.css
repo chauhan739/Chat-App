@@ -1,0 +1,50 @@
+.chat-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  cursor: default;
+}
+
+.chat-popup-header {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: move;
+  z-index: 2;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.chat-popup-body {
+  padding: 10px;
+
+  /* edit */
+  max-height: calc(300px - 40px);
+}
+
+.send_message_area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-popup-input {
+  /* width: calc(100% - 20px); */
+  width: 80%;
+  padding: 5px;
+  margin-right: 5px;
+  box-sizing: border-box;
+}
+
+.chat-popup-button {
+  padding: 5px;
+}

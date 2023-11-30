@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yamaha Blogs</title>
+    <link rel="stylesheet" href="/css/Blog.css" />
+    <link rel="stylesheet" href="/css/CustomAlert.css" />
+    <link rel="stylesheet" href="/css/Chat.css" />
+</head>
+
+<body>
+    <header>
+        <div onclick="allPosts()">
+            <h3>Welcome to Yamaha Blogs</h3>
+        </div>
+        <!-- <img src="../public/images/yamaha_logo.svg.png" alt="yamaha_logo" height="50px"> -->
+        <div id="heading" style="display: none;"></div>
+        <div style="display: flex; padding-right: 10px; justify-content: space-between;">
+            <div style="margin-right: 10px;"><button type="button" onclick="myPosts()">My Posts</button></div>
+            <div style="margin-right: 10px;"><button type="button" onclick="allPosts()">All Posts</button></div>
+            <div style="margin-right: 10px;"><a href="#" id="header-img" onclick="fetchprofile(localStorage.email)"
+                    style="display: block; padding-right: 5px"></a>
+            </div>
+            <div><a href="#" onclick="logout()" style="display: block">
+                    <img src="https://res.cloudinary.com/aryan-cloud/image/upload/v1698067352/logout_nalfcq.png"
+                        alt="logout" width="40px" height="40px" style="object-fit: cover;" /></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Alert Popup -->
+    <div class="overlay" id="customAlert">
+        <div class="modal">
+            <p id="alertMessage"></p>
+            <button onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <div class="blog">
+        <div class="users">
+            <h3><u>Online Users</u></h3>
+            <div id="online-users"></div>
+        </div>
+
+        <div id="blog-chat-container">
+            <div class="tabs">
+                <div class="tab" id="blog-tab">Blog</div>
+                <div class="tab" id="chat-tab">Chat</div>
+            </div>
+
+            <form id="blog-form">
+                <h2>Create a Blog</h2>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required />
+
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" cols="30" rows="10" required></textarea>
+
+                <div style="display: flex">
+                    <button id="upload_widget" style="margin-right: 150px">
+                        Upload Image
+                    </button>
+                    <div id="uploaded-img-thumbnail"></div>
+                </div>
+
+                <!-- <label for="img-url">Image URL:</label> -->
+                <input type="text" id="img-url" placeholder="Only jpeg, jpg, png, heif and webp formats are allowed"
+                    style="display: none;" disabled />
+
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="sports">Sports</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="politics">Politics</option>
+                    <option value="travel">Travel</option>
+                    <option value="finance">Finance</option>
+                </select>
+
+                <button type="button" onclick="submitPost()">Submit</button>
+            </form>
+
+            <div id="chat-container" style="display: none">
+                <!-- <div id="messages"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="input-message" class="chat-input" />
+
+                    <button class="send-button" onclick="sendmessage()">
+                        Send
+                    </button>
+                </div> -->
+            </div>
+        </div>
+
+        <div id="post-area">
+            <div id="total-posts"></div>
+        </div>
+    </div>
+
+    <!-- Popup Container -->
+    <div class="popup" id="popup">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
+            <h2 id="popupHeading"></h2>
+            <div onclick="closePopup()" style="cursor: pointer;">X</div>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div id="popupPFP">
+                <div id="upload-pfp" style="cursor: pointer;">
+                    <img src="#" id="displayPFP" width="250px" height="250px"
+                        style="object-fit: cover; border-radius: 8px;" />
+                </div>
+                <!-- <label for="popupPfpUrl">Profile Pic URL:</label> -->
+                <input type="text" id="popupPfpUrl" placeholder="Only jpeg, jpg, png, heif and webp formats are allowed"
+                    disabled style="display: none;" />
+            </div>
+            <div style="margin-right: 50px; margin-top: auto; margin-bottom: auto;">
+                <div style="display: flex; flex-direction: row; margin-bottom: 15px;">
+                    <label for="editUsername">Username:&nbsp;</label>
+                    <label id="popupUsername"></label>
+                </div>
+                <div style="display: flex; flex-direction: row; margin-bottom: 15px;">
+                    <label for="editEmail">Email:&nbsp;</label>
+                    <label id="popupEmail"></label>
+                </div>
+                <div style="display: flex; flex-direction: row; margin-bottom: 15px;">
+                    <label for="editTP">Total Posts:&nbsp;</label>
+                    <label id="popupTP"></label>
+                </div>
+                <div style="display: flex; flex-direction: row; margin-bottom: 15px;">
+                    <label for="editTL">Likes Earned:&nbsp;</label>
+                    <label id="popupTL"></label>
+                </div>
+                <!-- <div>
+                    <button type="button" id="upload-pfp" style="display: none;">New Pic</button>
+                </div> -->
+            </div>
+        </div>
+        <div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between; padding-top: 20px;">
+                <div>
+                    <label for="editDOB">Date of Birth:</label>
+                    <input type="text" id="popupDOB" style="width:150px" disabled />
+                </div>
+                <div>
+                    <label for="editGender">Gender:</label>
+                    <input type="text" id="popupGender" style="width:150px" disabled />
+                </div>
+                <div>
+                    <label for="editBG">Blood Group:</label>
+                    <select id="popupBG" name="popupBG" style="width:150px" disabled>
+                        <option value="N/A">N/A</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <div>
+                    <label for="editCompany">Company:</label>
+                    <input type="text" id="popupCompany" style="width: 240px;" disabled />
+                </div>
+                <div>
+                    <label for="editDesignation">Designation:</label>
+                    <input type="text" id="popupDesignation" style="width: 240px;" disabled />
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="button" id="updateProfileButton" onclick="updateProfile()"
+                style="display: none; margin-left: auto; margin-right: auto;">
+                Update Profile
+            </button>
+        </div>
+    </div>
+
+    <!-- <div class="chat-popup" id="chat-popup">
+        <div class="chat-popup-header" id="chat-popup-header">
+            <span style="cursor: pointer;" onclick="closeChat(this)">X</span> Chat Window
+        </div>
+
+        <div class="chat-popup-body" id="chat-popup-body">
+            <p>This is the chat content. You can add your chat messages here.</p>
+
+            <div class="send_message_area">
+                <input type="text" id="input-message" placeholder="Type your message...">
+                <div><button type="button" onclick="sendmessage()"></button></div>
+            </div>
+        </div>
+    </div> -->
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" type="text/javascript"></script>
+    <script src="/js/client_socket_manager.js"></script>
+
+    <script src="/js/CustomAlert.js"></script>
+    <script src="/js/Blog.js"></script>
+    <script src="/js/Chat.js"></script>
+
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    <script src="/js/CloudinaryWidgetBlog.js"></script>
+</body>
+
+</html>

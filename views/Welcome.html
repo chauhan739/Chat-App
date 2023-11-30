@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/Welcome.css" />
+    <link rel="stylesheet" type="text/css" href="/css/CustomAlert.css" />
+</head>
+
+<body>
+    <!-- Alert Popup -->
+    <div class="overlay" id="customAlert">
+        <div class="modal">
+            <p id="alertMessage"></p>
+            <button onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <header>
+        <h3 style="float: left; margin-left: 10px; cursor: pointer;" onclick="window.location.href='/'">Welcome to
+            Yamaha Blogs</h3>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab" id="sign-in-tab">Sign In</div>
+            <div class="tab" id="sign-up-tab">Sign Up</div>
+        </div>
+
+        <div class="form-content" id="sign-in-form">
+            <label for="email-signin">Email:</label>
+            <input type="email" id="email-signin" required />
+
+            <label for="password-signin">Password:</label>
+            <input type="password" id="password-signin" required />
+
+            <div style="display: flex; flex-direction: row;">
+                <div style="width: 60%; margin-right: 15px;">
+                    <button id="signin-button" disabled onclick="signIn()">
+                        Sign In
+                    </button>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="./forget_password.html"><button>Forgot Password</button></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-content" id="sign-up-form" style="display: none">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required />
+
+            <label for="email-signup">Email:</label>
+            <input type="email" id="email-signup" required />
+
+            <label for="password-signup">Password:</label>
+            <input type="password" id="password-signup" required />
+
+            <button id="send-otp-button" disabled onclick="sendOTP()">
+                Send OTP
+            </button>
+
+            <div class="otp-container" id="otp-container">
+                <label for="otp">Enter OTP:</label>
+                <div class="otp-input-container">
+                    <input type="text" id="otp" class="otp-input" maxlength="1" required />
+                    <input type="text" class="otp-input" maxlength="1" required />
+                    <input type="text" class="otp-input" maxlength="1" required />
+                    <input type="text" class="otp-input" maxlength="1" required />
+                    <input type="text" class="otp-input" maxlength="1" required />
+                    <input type="text" class="otp-input" maxlength="1" required />
+                </div>
+                <div class="otp-buttons">
+                    <button id="verify-otp-button" disabled onclick="verifyOTP()">
+                        Verify OTP
+                    </button>
+                    <button id="resend-otp-button" onclick="resendOTP()">
+                        Resend OTP
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/Welcome.js"></script>
+    <script src="/js/CustomAlert.js"></script>
+</body>
+
+</html>
